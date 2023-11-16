@@ -1,120 +1,55 @@
-#include<iostream>
-#include<vector>
-
+#include <iostream>
 using namespace std;
 
-class Matrix {
-private:
-    vector<vector<int>> matrix;
-    int rows, cols;
+class Shape{
+    public:
+    virtual void area() = 0; //pure virtual function
+};
+class Triangle : public Shape{
+    private:
+    int base, height;
 
-public:
-    Matrix(int rows, int cols) { 
-        this->rows=rows;
-     this->cols=cols;
-        matrix.resize(rows, vector<int>(cols));
+    public:
+    Triangle(int b, int h){
+        this->base=b;
+        this->height=h;
     }
 
-    
-
-    void readMatrix() {
-        cout << "Enter matrix elements:\n";
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                cin >> matrix[i][j];
-            }
-        }
+    void area(){
+        cout<<"Area of triangle is "<< (this->base * this->height) /2 <<endl;
     }
 
-    void addMatrix(Matrix& B) {
-        if (rows != B.rows || cols != B.cols) {
-            throw "Matrix dimensions are not compatible for addition.";
-        }
 
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                matrix[i][j] += B.matrix[i][j];
-            }
-        }
+};
+
+
+class Rec : public Shape{
+    private:
+    int length;
+    int width;
+    public:
+    Rec(int l, int w){
+        this->length=l;
+        this->width=w;
+
     }
 
-    void subtractMatrix(Matrix& B) {
-        if (rows != B.rows || cols != B.rows) {
-            throw "Matrix dimensions are not compatible for subtraction.";
-        }
-
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                matrix[i][j] -= B.matrix[i][j];
-            }
-        }
-    }
-
-    Matrix multiplyMatrix(const Matrix& B) const {
-    if (cols != B.rows) {
-        throw "Matrix dimensions are not compatible for multiplication.";
-    }
-
-    Matrix result(rows, B.cols);
-
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < B.cols; j++) {
-            for (int k = 0; k < cols; k++) {
-                result.matrix[i][j] += matrix[i][k] * B.matrix[k][j];
-            }
-        }
-    }
-
-    return result;
-}
-
-
-    void displayMatrix() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                cout << matrix[i][j] << " ";
-            }
-            cout << "\n";
-        }
+    void area(){
+         cout << "Area of Rectangle is:"<<(length*width)<<endl;
     }
 };
 
-int main() {
-    try {
-             int r1,c1,r2,c2;
+int main(){
+    int h,b;
+    cout <<"Enter the height of the triangle"<<endl;
+    cin >> h;
+    cout <<"Enter the base of the triangle"<<endl;
+    cin>>b;
+    Triangle t1(b,h);
 
-        cout<<"Enter the rows and cols for matrix1"<<endl;
-        cin >> r1,c1;
 
-        Matrix A(r1, c1);
-        A.readMatrix();
-        cout << "Matrix A:\n";
-        A.displayMatrix();
-        cout <<"Enter the rows and cols for the matrix2"<<endl;
-        cin >> r2,c2;
-
-        Matrix B(r2, c2);
-        B.readMatrix();
-        cout << "Matrix B:\n";
-        B.displayMatrix();
-
-        cout << "Addition of Matrices A and B:\n";
-        A.addMatrix(B);
-        A.displayMatrix();
-
-        cout << "Subtraction of Matrices A and B:\n";
-        A.subtractMatrix(B);
-        A.displayMatrix();
-
-       
-
-        cout << "Multiplication of Matrices A and B:\n";
-       Matrix result = A.multiplyMatrix(B);
-        result.displayMatrix();
-    }
-    catch (const char* msg) {
-        cerr << msg << "\n";
-    }
-
-    return 0;
+    int l,w;
+    cout <<"Enter the length and width of rectangle"<<endl;
+    cin>>l>>w;
+    Rec r1(l,w);
 }
