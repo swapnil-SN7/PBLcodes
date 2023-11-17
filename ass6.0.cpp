@@ -22,28 +22,36 @@ public:
         }
     }
 
-    void addMatrix(const Matrix& B) {
+    Matrix addMatrix(const Matrix& B) const {
         if (rows != B.rows || cols != B.cols) {
             throw "Matrix dimensions are not compatible for addition.";
         }
 
+        Matrix result(rows, cols);
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                matrix[i][j] += B.matrix[i][j];
+                result.matrix[i][j] = matrix[i][j] + B.matrix[i][j];
             }
         }
+
+        return result;
     }
 
-    void subtractMatrix(const Matrix& B) {
-        if (rows != B.rows || cols != B.rows) {
+    Matrix subtractMatrix(const Matrix& B) const {
+        if (rows != B.rows || cols != B.cols) {
             throw "Matrix dimensions are not compatible for subtraction.";
         }
 
+        Matrix result(rows, cols);
+
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                matrix[i][j] -= B.matrix[i][j];
+                result.matrix[i][j] = matrix[i][j] - B.matrix[i][j];
             }
         }
+
+        return result;
     }
 
     Matrix multiplyMatrix(const Matrix& B) const {
@@ -52,6 +60,13 @@ public:
         }
 
         Matrix result(rows, B.cols);
+
+        // Initialize result matrix elements to zero
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < B.cols; j++) {
+                result.matrix[i][j] = 0;
+            }
+        }
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < B.cols; j++) {
@@ -95,16 +110,16 @@ int main() {
         B.displayMatrix();
 
         cout << "Addition of Matrices A and B:\n";
-        A.addMatrix(B);
-        A.displayMatrix();
+        Matrix additionResult = A.addMatrix(B);
+        additionResult.displayMatrix();
 
         cout << "Subtraction of Matrices A and B:\n";
-        A.subtractMatrix(B);
-        A.displayMatrix();
+        Matrix subtractionResult = A.subtractMatrix(B);
+        subtractionResult.displayMatrix();
 
         cout << "Multiplication of Matrices A and B:\n";
-        Matrix result = A.multiplyMatrix(B);
-        result.displayMatrix();
+        Matrix multiplicationResult = A.multiplyMatrix(B);
+        multiplicationResult.displayMatrix();
     }
     catch (const char* msg) {
         cerr << msg << "\n";
