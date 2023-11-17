@@ -1,5 +1,5 @@
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -9,13 +9,9 @@ private:
     int rows, cols;
 
 public:
-    Matrix(int rows, int cols) { 
-        this->rows=rows;
-     this->cols=cols;
+    Matrix(int rows, int cols) : rows(rows), cols(cols) {
         matrix.resize(rows, vector<int>(cols));
     }
-
-    
 
     void readMatrix() {
         cout << "Enter matrix elements:\n";
@@ -26,7 +22,7 @@ public:
         }
     }
 
-    void addMatrix(Matrix& B) {
+    void addMatrix(const Matrix& B) {
         if (rows != B.rows || cols != B.cols) {
             throw "Matrix dimensions are not compatible for addition.";
         }
@@ -38,7 +34,7 @@ public:
         }
     }
 
-    void subtractMatrix(Matrix& B) {
+    void subtractMatrix(const Matrix& B) {
         if (rows != B.rows || cols != B.rows) {
             throw "Matrix dimensions are not compatible for subtraction.";
         }
@@ -51,25 +47,24 @@ public:
     }
 
     Matrix multiplyMatrix(const Matrix& B) const {
-    if (cols != B.rows) {
-        throw "Matrix dimensions are not compatible for multiplication.";
-    }
+        if (cols != B.rows) {
+            throw "Matrix dimensions are not compatible for multiplication.";
+        }
 
-    Matrix result(rows, B.cols);
+        Matrix result(rows, B.cols);
 
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < B.cols; j++) {
-            for (int k = 0; k < cols; k++) {
-                result.matrix[i][j] += matrix[i][k] * B.matrix[k][j];
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < B.cols; j++) {
+                for (int k = 0; k < cols; k++) {
+                    result.matrix[i][j] += matrix[i][k] * B.matrix[k][j];
+                }
             }
         }
+
+        return result;
     }
 
-    return result;
-}
-
-
-    void displayMatrix() {
+    void displayMatrix() const {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 cout << matrix[i][j] << " ";
@@ -81,17 +76,18 @@ public:
 
 int main() {
     try {
-             int r1,c1,r2,c2;
+        int r1, c1, r2, c2;
 
-        cout<<"Enter the rows and cols for matrix1"<<endl;
-        cin >> r1,c1;
+        cout << "Enter the rows and cols for matrix1" << endl;
+        cin >> r1 >> c1;
 
         Matrix A(r1, c1);
         A.readMatrix();
         cout << "Matrix A:\n";
         A.displayMatrix();
-        cout <<"Enter the rows and cols for the matrix2"<<endl;
-        cin >> r2,c2;
+
+        cout << "Enter the rows and cols for matrix2" << endl;
+        cin >> r2 >> c2;
 
         Matrix B(r2, c2);
         B.readMatrix();
@@ -106,10 +102,8 @@ int main() {
         A.subtractMatrix(B);
         A.displayMatrix();
 
-       
-
         cout << "Multiplication of Matrices A and B:\n";
-       Matrix result = A.multiplyMatrix(B);
+        Matrix result = A.multiplyMatrix(B);
         result.displayMatrix();
     }
     catch (const char* msg) {
