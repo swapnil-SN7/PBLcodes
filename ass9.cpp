@@ -22,10 +22,17 @@ void addOrUpdatePerson(map<string, Person>& records) {
     cout << "Telephone No: ";
     cin >> newPerson.telephoneNo;
 
-    // Adding or updating the record in the map
-    records[newPerson.name] = newPerson;
+    // Using insert to add or update the record in the map
+    auto result = records.insert({newPerson.name, newPerson});
 
-    cout << "Record added/updated successfully!\n";
+    // Check if the insertion was successful or if the name already exists
+    if (result.second) {
+        cout << "Record added successfully!\n";
+    } else {
+        // If the name already exists, update the existing record
+        cout << "Record already exists. Updating the existing record.\n";
+        result.first->second = newPerson;
+    }
 }
 
 // Function to display all person records
@@ -102,9 +109,4 @@ int main() {
                 cout << "Exiting the program.\n";
                 break;
             default:
-                cout << "Invalid choice. Please enter a number between 1 and 5.\n";
-        }
-    } while (choice != 5);
-
-    return 0;
-}
+                cout
