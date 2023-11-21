@@ -122,7 +122,7 @@ int main() {
         multiplicationResult.displayMatrix();
     }
     catch (const char* msg) {
-        cerr << msg << "\n";
+        cout << msg << "\n";
     }
 
     return 0;
